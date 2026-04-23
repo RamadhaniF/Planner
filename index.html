@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Untuk Kamu 💖 - Love Date Planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* { 
+  box-sizing:border-box; 
+  margin:0; 
+  padding:0; 
+}
+
+:root {
+  --primary: #ff6b81;
+  --primary-dark: #ff4b5c;
+  --secondary: #ff7eb3;
+  --glass: rgba(255,255,255,0.1);
+  --glass-hover: rgba(255,255,255,0.2);
+  --shadow: 0 25px 50px rgba(0,0,0,0.25);
+  --shadow-hover: 0 35px 70px rgba(0,0,0,0.35);
+}
+
+body {
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(-45deg, #ff758c, #ff7eb3, #ff6b81, #ffa726);
+  background-size:400% 400%;
+  animation:gradientShift 15s ease infinite;
+  color:white;
+  min-height:100vh;
+  overflow:hidden;
+  position:relative;
+}
+
+@keyframes gradientShift {
+  0%,100% { background-position:0% 50%; }
+  50% { background-position:100% 50%; }
+}
+
+.container {
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  position:relative;
+  z-index:10;
+}
+
+.card {
+  background:var(--glass);
+  backdrop-filter:blur(25px);
+  -webkit-backdrop-filter:blur(25px);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:30px;
+  padding:40px 30px;
+  max-width:500px;
+  width:100%;
+  text-align:center;
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+  transition:all 0.6s cubic-bezier(0.23,1,0.320,1);
+}
+
+.card::before {
+  content:'';
+  position:absolute;
+  top:-50%;
+  left:-50%;
+  width:200%;
+  height:200%;
+  background:linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+  transform:rotate(45deg);
+  transition:0.8s;
+  opacity:0;
+}
+
+.card:hover::before {
+  animation:shine 1.5s;
+}
+
+@keyframes shine {
+  0% { transform:translateX(-100%) translateY(-100%) rotate(45deg); opacity:0; }
+  50% { opacity:1; }
+  100% { transform:translateX(100%) translateY(100%) rotate(45deg); opacity:0; }
+}
+
+h1 { 
+  font-size:clamp(28px,5vw,42px); 
+  font-weight:800;
+  margin-bottom:10px;
+  background:linear-gradient(45deg,#fff,#ffeb3b);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+h2 { 
+  font-size:clamp(20px,4vw,28px); 
+  font-weight:600;
+  margin-bottom:25px;
+  opacity:0.95;
+}
+
+.typing-text {
+  font-size:clamp(16px,3vw,22px);
+  min-height:70px;
+  margin:25px 0;
+  line-height:1.6;
+  font-weight:500;
+}
+
+input, select {
+  width:100%;
+  padding:18px 20px;
+  margin:15px 0;
+  border:2px solid rgba(255,255,255,0.2);
+  border-radius:20px;
+  font-size:16px;
+  font-family:'Poppins',sans-serif;
+  background:var(--glass);
+  color:white;
+  backdrop-filter:blur(10px);
+  transition:all 0.3s;
+  font-weight:400;
+}
+
+input::placeholder {
+  color:rgba(255,255,255,0.7);
+}
+
+input:focus, select:focus {
+  outline:none;
+  border-color:var(--primary);
+  box-shadow:0 0 0 4px rgba(255,107,129,0.2);
+  transform:translateY(-2px);
+}
+
+.btn-primary {
+  width:100%;
+  padding:20px;
+  margin:20px 0;
+  border:none;
+  border-radius:25px;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+  background:linear-gradient(45deg,#fff,#ffeb3b);
+  color:#ff4b5c;
+  box-shadow:var(--shadow);
+  transition:all 0.4s cubic-bezier(0.23,1,0.320,1);
+  position:relative;
+  overflow:hidden;
+}
+
+.btn-primary::before {
+  content:'';
+  position:absolute;
+  top:0;
+  left:-100%;
+  width:100%;
+  height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);
+  transition:0.5s;
+}
+
+.btn-primary:hover {
+  transform:translateY(-5px) scale(1.02);
+  box-shadow:var(--shadow-hover);
+}
+
+.btn-primary:hover::before {
+  left:100%;
+}
+
+.btn-primary:active {
+  transform:translateY(-2px);
+}
+
+.places {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(130px,1fr));
+  gap:15px;
+  margin:30px 0;
+}
+
+.place {
+  background:var(--glass);
+  border:2px solid rgba(255,255,255,0.1);
+  padding:25px 15px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:all 0.4s cubic-bezier(0.23,1,0.320,1);
+  font-weight:600;
+  font-size:15px;
+  position:relative;
+  overflow:hidden;
+  backdrop-filter:blur(10px);
+}
+
+.place::before {
+  content:attr(data-emoji);
+  display:block;
+  font-size:28px;
+  margin-bottom:8px;
+}
+
+.place:hover {
+  transform:translateY(-8px) scale(1.05);
+  border-color:var(--primary);
+  background:var(--glass-hover);
+  box-shadow:var(--shadow);
+}
+
+.place.selected {
+  background:linear-gradient(45deg,#fff,var(--primary));
+  color:#ff4b5c;
+  border-color:#fff;
+  transform:scale(1.08);
+  box-shadow:0 20px 40px rgba(255,107,129,0.4);
+}
+
+#hasil {
+  margin-top:25px;
+  font-size:clamp(16px,3vw,20px);
+  font-weight:600;
+  min-height:40px;
+  padding:15px;
+  border-radius:15px;
+  background:var(--glass);
+  opacity:0;
+  transform:translateY(20px);
+  transition:all 0.6s;
+}
+
+#hasil.show {
+  opacity:1;
+  transform:translateY(0);
+}
+
+.screen {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100vh;
+  z-index:1000;
+  padding:20px;
+  transition:all 0.8s cubic-bezier(0.23,1,0.320,1);
+}
+
+.hidden { 
+  opacity:0;
+  transform:scale(0.8) translateY(50px);
+  pointer-events:none;
+}
+
+.particles {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:1;
+}
+
+.particle {
+  position:absolute;
+  background:radial-gradient(circle, rgba(255,255,255,0.8), transparent);
+  border-radius:50%;
+  pointer-events:none;
+  animation:particleFloat 8s linear infinite;
+}
+
+@keyframes particleFloat {
+  0% {
+    transform:translateY(100vh) scale(0) rotate(0deg);
+    opacity:0;
+  }
+  10% { opacity:1; }
+  90% { opacity:1; }
+  100% {
+    transform:translateY(-100px) scale(1) rotate(360deg);
+    opacity:0;
+  }
+}
+
+#ending {
+  background:linear-gradient(135deg, var(--primary-dark), var(--primary));
+}
+
+#ending .card {
+  max-width:550px;
+}
+
+.ending-text {
+  font-size:clamp(24px,6vw,48px);
+  font-weight:800;
+  margin:20px 0;
+  background:linear-gradient(45deg,#fff,#ffeb3b);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+@media (max-width:480px) {
+  .card { padding:25px 20px; }
+  .places { grid-template-columns:1fr 1fr; }
+}
+
+/* LOADING SPINNER */
+.loading {
+  display:inline-block;
+  width:20px;
+  height:20px;
+  border:3px solid rgba(255,255,255,0.3);
+  border-radius:50%;
+  border-top-color:#fff;
+  animation:spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform:rotate(360deg); }
+}
+</style>
+</head>
+<body>
+
+<!-- PARTICLES CONTAINER -->
+<div class="particles" id="particles"></div>
+
+<!-- SCREENS -->
+<div id="opening" class="screen container">
+  <div class="card">
+    <h1><i class="fas fa-heart"></i></h1>
+    <h2>Hewwoooo Cimitttt 💕</h2>
+    <div id="typing" class="typing-text"></div>
+    <button id="startBtn" class="btn-primary" style="display:none;">
+      <i class="fas fa-gift"></i> Buka Kejutan
+    </button>
+  </div>
+</div>
+
+<div id="main" class="screen container hidden">
+  <div class="card">
+    <h1><i class="fas fa-calendar-heart"></i></h1>
+    <h2>Date Plan Minggu Ini</h2>
+    
+    <input id="namaInput" placeholder="Nama kamu yang manis 💕" maxlength="25">
+    
+    <div class="places">
+      <div class="place" data-emoji="🎬" onclick="pilih('Nonton Film')">
+        Cinema Date
+      </div>
+      <div class="place" data-emoji="🍽️" onclick="pilih('At your house maybe wkwkwk')">
+        Go to somewhere simple
+      </div>
+      <div class="place" data-emoji="🌅" onclick="pilih('Hanging Out/Jalan-jalan')">
+        Hanging Out with you
+      </div>
+      <div class="place" data-emoji="☕" onclick="pilih('Coffee Date')">
+        Coffee Date
+      </div>
+    </div>
+    
+    <select id="jam">
+      <option value="13:00">🕐 13:00 </option>
+      <option value="15:00">🕔 15:00 </option>
+      <option value="18:00">🕗 18:00 </option>
+      <option value="20:00">🕛 20:00 </option>
+    </select>
+    
+    <button id="confirmBtn" class="btn-primary" onclick="confirmDate()">
+      <i class="fas fa-check-circle"></i> im readyyy! 💖
+    </button>
+    <div id="hasil"></div>
+  </div>
+</div>
+
+<div id="ending" class="screen container hidden">
+  <div class="card">
+    <h1><i class="fas fa-heart-pulse"></i></h1>
+    <div class="ending-text">CAN'T WAIT! ❤️</div>
+    <h2>Bebeyy ingin ketemuu dengan cimitt!</h2>
+    <p style="font-size:18px; opacity:0.9; margin-top:20px;">
+      See you on our date! 😘✨
+    </p>
+    <button class="btn-primary" onclick="restart()" style="max-width:250px; margin-top:30px;">
+      <i class="fas fa-redo"></i> Plan Lagi
+    </button>
+  </div>
+</div>
+
+<script>
+// GLOBAL STATE
+let selectedPlace = '';
+let isTransitioning = false;
+
+// SMOOTH PAGE TRANSITION
+function switchScreen(fromId, toId) {
+  if (isTransitioning) return;
+  isTransitioning = true;
+  
+  const fromScreen = document.getElementById(fromId);
+  const toScreen = document.getElementById(toId);
+  
+  fromScreen.classList.add('hidden');
+  setTimeout(() => {
+    toScreen.classList.remove('hidden');
+    isTransitioning = false;
+  }, 800);
+}
+
+// ADVANCED TYPEWRITER
+const introTexts = [
+  "bebeyy kangen banget sama cimitt... 💕",
+  "Minggu ini bebey harusnya free nih!",
+  "apakah cimit mau spend time bareng bebey? 🥰",
+  "Pilih cimit mau kemana ya!"
+];
+
+let textIndex = 0;
+let charIndex = 0;
+const typingEl = document.getElementById('typing');
+
+function typeWriter() {
+  if (charIndex < introTexts[textIndex].length) {
+    typingEl.textContent += introTexts[textIndex][charIndex];
+    charIndex++;
+    setTimeout(typeWriter, 60 + Math.random() * 40);
+  } else {
+    setTimeout(() => {
+      if (textIndex < introTexts.length - 1) {
+        textIndex++;
+        charIndex = 0;
+        typingEl.textContent = '';
+        setTimeout(typeWriter, 500);
+      } else {
+        document.getElementById('startBtn').style.display = 'block';
+        document.getElementById('startBtn').style.animation = 'pulse 2s infinite';
+      }
+    }, 1500);
+  }
+}
+
+// PLACE SELECTION
+function pilih(placeName) {
+  selectedPlace = placeName;
+  document.querySelectorAll('.place').forEach(el => {
+    el.classList.remove('selected');
+    el.style.animation = 'none';
+  });
+  event.target.classList.add('selected');
+  event.target.style.animation = 'bounce 0.6s';
+  
+  createParticles(event.target);
+}
+
+// CONFIRM DATE
+// CONFIRM DATE - WHATSAPP VERSION
+function confirmDate() {
+  if (isTransitioning) return;
+  
+  const nama = document.getElementById('namaInput').value.trim() || 'My Cimitt ❤️';
+  const jam = document.getElementById('jam').value;
+  const hasil = document.getElementById('hasil');
+  const confirmBtn = document.getElementById('confirmBtn');
+  
+  if (!selectedPlace) {
+    hasil.innerHTML = '<i class="fas fa-heart-broken"></i> Pilih tempat dulu dong! 😘';
+    hasil.classList.add('show');
+    return;
+  }
+  
+  // Buat pesan WhatsApp yang cantik
+  const whatsappMessage = `💖 *DATE CONFIRMED!* 💖
+
+*👩‍❤️‍💋‍👨 Info Date:*
+📛 Nama: ${nama}
+📍 Tempat: ${selectedPlace}
+🕐 Jam: ${jam}
+
+*Bebeyy can't wait to meet cimitt!* 😍✨
+*Kapan lagi nih?* 💕`;
+
+  // ENCODE untuk WhatsApp URL
+  const encodedMessage = encodeURIComponent(whatsappMessage);
+  
+  // GANTI NOMOR INI dengan nomor WA kamu!
+  const phoneNumber = '6287776641801'; // Format: 62xxxxxxxxxx (tanpa + atau 0 di depan)
+  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+  
+  // Show confirmation
+  hasil.innerHTML = `
+    <div style="animation:fadeInUp 0.8s;">
+      <i class="fab fa-whatsapp" style="font-size:32px; color:#25D366;"></i><br>
+      ${nama},<br>
+      Date ${selectedPlace}<br>
+      jam ${jam} 💖<br><br>
+      <small>📱 Dikirim ke WA...</small>
+    </div>
+  `;
+  hasil.classList.add('show');
+  
+  // Button loading
+  confirmBtn.innerHTML = '<span class="loading"></span> Sending to WA...';
+  confirmBtn.disabled = true;
+  
+  // Kirim ke WhatsApp + simpan local
+  setTimeout(() => {
+    // Simpan juga ke localStorage (backup)
+    const datePlan = {nama, tempat: selectedPlace, jam, timestamp: new Date().toLocaleString('id-ID')};
+    localStorage.setItem('latestDatePlan', JSON.stringify(datePlan));
+    
+    console.log('🌹 WHATSAPP SENT:', whatsappUrl);
+    
+    // BUKA WHATSAPP OTOMATIS
+    window.open(whatsappUrl, '_blank');
+    
+    // Lanjut ke ending screen
+    setTimeout(() => {
+      switchScreen('main', 'ending');
+    }, 1000);
+    
+  }, 2000);
+}
+
+// RESTART
+function restart() {
+  location.reload();
+}
+
+// PARTICLE SYSTEM
+function createParticles(element) {
+  for (let i = 0; i < 12; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = element.offsetLeft + element.offsetWidth/2 + 'px';
+    particle.style.top = element.offsetTop + element.offsetHeight/2 + 'px';
+    particle.style.width = particle.style.height = (Math.random() * 8 + 4) + 'px';
+    particle.style.animationDelay = Math.random() * 0.5 + 's';
+    particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+    
+    document.getElementById('particles').appendChild(particle);
+    
+    setTimeout(() => particle.remove(), 8000);
+  }
+}
+
+// AUTO PARTICLES
+setInterval(() => {
+  const particle = document.createElement('div');
+  particle.className = 'particle';
+  particle.style.left = Math.random() * 100 + 'vw';
+  particle.style.top = '100vh';
+  particle.style.width = particle.style.height = (Math.random() * 6 + 2) + 'px';
+  particle.style.animationDuration = (Math.random() * 5 + 7) + 's';
+  document.getElementById('particles').appendChild(particle);
+  setTimeout(() => particle.remove(), 9000);
+}, 800);
+
+// INIT
+document.getElementById('startBtn').onclick = () => switchScreen('opening', 'main');
+typeWriter();
+
+// CSS ANIMATIONS
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes pulse {
+    0%,100% { transform:scale(1); }
+    50% { transform:scale(1.05); }
+  }
+  @keyframes bounce {
+    0%,100% { transform:scale(1); }
+    50% { transform:scale(1.15); }
+  }
+  @keyframes fadeInUp {
+    from { opacity:0; transform:translateY(30px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+`;
+document.head.appendChild(style);
+
+// PWA READY - Add to home screen
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  deferredPrompt = e;
+});
+</script>
+
+</body>
+</html>
